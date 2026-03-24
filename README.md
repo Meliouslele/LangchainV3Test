@@ -1,11 +1,23 @@
-一个简单的健康档案agent
+**智能健康档案问答系统 (RAG)**
+基于 FastAPI 与 LangChain 构建的健康档案智能问答系统，结合 RAG（检索增强生成）与重排序（Re-Ranker）技术，提供精准、可解释的健康信息查询服务。
 
-  文本预处理后进行灌库
-  
-文档加载->文档切分->向量化->灌入向量数据库
+主要特性
+文档预处理流水线：支持多种格式文档（PDF、TXT、Markdown 等）的加载、智能切分、向量化，并存入向量数据库。
 
-  RAG在线检索
-  
-获取用户问题->用户问题向量化->检索向量数据库->将检索结果和用户问题填入prompt模版->用最终的prompt调用LLM->由LLM生成回复
+RAG 在线检索：用户问题向量化后检索相关文档片段，结合提示词模板生成高质量回答。
 
-在RAG在线检索的基础上增加re-ranker功能处理逻辑。re-ranker是一种用于信息检索系统的技术，旨在对初步检索到的结果进行进一步排序，以提高相关性和准确性
+重排序优化：在初步检索结果基础上，使用跨编码器（Cross-Encoder）模型进行二次排序，显著提升答案相关性与准确性。
+
+FastAPI 后端：提供高性能异步 API 接口，支持并发请求与健康检查。
+
+可插拔组件：支持切换不同的 Embedding 模型、向量数据库、重排序模型，便于定制。
+
+**技术栈**
+组件	技术选型
+后端框架	FastAPI + Uvicorn
+LLM 与 RAG 框架	LangChain
+Embedding 模型	OpenAI text-embedding-3-small / 本地模型
+向量数据库	Chroma / FAISS / Pinecone
+重排序模型	Cohere ReRank / BAAI/bge-reranker-base
+文档处理	LangChain 文档加载器 + RecursiveCharacterTextSplitter
+部署	Docker / Docker Compose
